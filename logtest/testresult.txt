@@ -1,0 +1,78 @@
+go test -v -run=Benchmark -bench=Benchmark -benchmem -benchtime 10s -cpu=4,8 -parallel=8 ./
+goos: windows
+goarch: amd64
+pkg: test/logtest
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkZap
+BenchmarkZap-4                   1822892              6876 ns/op             336 B/op          6 allocs/op
+BenchmarkZap-8                   1730490              7037 ns/op             336 B/op          6 allocs/op
+BenchmarkLogger
+BenchmarkLogger-4                1732777              6461 ns/op             296 B/op          3 allocs/op
+BenchmarkLogger-8                1758446              6419 ns/op             296 B/op          3 allocs/op
+BenchmarkLoggerNoFORMAT
+BenchmarkLoggerNoFORMAT-4        2670556              4340 ns/op             112 B/op          1 allocs/op
+BenchmarkLoggerNoFORMAT-8        2694154              4192 ns/op             112 B/op          1 allocs/op
+BenchmarkLoggerWrite
+BenchmarkLoggerWrite-4           2949058              4087 ns/op             112 B/op          1 allocs/op
+BenchmarkLoggerWrite-8           2843649              4093 ns/op             112 B/op          1 allocs/op
+BenchmarkNativeGoLog
+BenchmarkNativeGoLog-4           2162052              5551 ns/op             296 B/op          3 allocs/op
+BenchmarkNativeGoLog-8           2139168              5715 ns/op             296 B/op          3 allocs/op
+
+———————————————————————————————————————————————————————————
+
+go test -v -run=Benchmark -bench=BenchmarkParallel -benchmem -benchtime 10s -cpu=4,8  ./
+goos: windows
+goarch: amd64
+pkg: test/logtest
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkParallelZap
+BenchmarkParallelZap-4                   1000000             10572 ns/op             336 B/op          6 allocs/op
+BenchmarkParallelZap-8                   1000000             10414 ns/op             337 B/op          6 allocs/op
+BenchmarkParallelLogger
+BenchmarkParallelLogger-4                1330300              8803 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelLogger-8                1363034              8945 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelLoggerNoFORMAT
+BenchmarkParallelLoggerNoFORMAT-4        2053911              7076 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerNoFORMAT-8        1677360              6888 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerWrite
+BenchmarkParallelLoggerWrite-4           1939933              6304 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerWrite-8           1922352              6938 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelNativeGoLog
+BenchmarkParallelNativeGoLog-4           1204039              9612 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelNativeGoLog-8           1362807              8875 ns/op             296 B/op          3 allocs/op
+PASS
+ok      test/logtest    188.213s
+
+————————————————————————————————————————————————————————————
+go test -v -run=Benchmark -bench=BenchmarkParallel -benchmem -benchtime 10s -cpu=4,8  ./
+goos: windows
+goarch: amd64
+pkg: test/logtest
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkParallelZap
+BenchmarkParallelZap-4                   1000000             10331 ns/op             336 B/op          6 allocs/op
+BenchmarkParallelZap-8                   1000000             10595 ns/op             337 B/op          6 allocs/op
+BenchmarkParallelLogger
+BenchmarkParallelLogger-4                1352834              8838 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelLogger-8                1411458              8754 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelLoggerNoFORMAT
+BenchmarkParallelLoggerNoFORMAT-4        2266597              5331 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerNoFORMAT-8        2090455              5631 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerWrite
+BenchmarkParallelLoggerWrite-4           2062870              5746 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerWrite-8           2037792              5963 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelNativeGoLog
+BenchmarkParallelNativeGoLog-4           1260445              9398 ns/op             280 B/op          3 allocs/op
+BenchmarkParallelNativeGoLog-8           1272560              9123 ns/op             280 B/op          3 allocs/op
+PASS
+ok      test/logtest    181.534s
+
+————————————————————————————————————————————————————————————————————————————————————————————————
+
+$ tail -1 /d/cfoldTest/zaplog.txt && tail -1 /d/cfoldTest/golog.txt && tail -1 /d/cfoldTest/gologFormat.txt && tail -1 /d/cfoldTest/gologWrite.txt && tail -1 /d/cfoldTest/nativelog.txt
+2023-07-10T19:58:15.138+0800    DEBUG   logtest/benchmark_test.go:82    >>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[DEBUG]2023/07/10 19:58:57 benchmark_test.go:94: >>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[DEBUG]2023/06/10 01:25:55.028277 log_test.go:46:>>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[DEBUG]2023/06/10 01:25:55.028277 log_test.go:55:>>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+[debug]2023/07/10 20:00:53.634554 benchmark_test.go:125: >>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
