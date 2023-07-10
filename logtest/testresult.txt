@@ -68,7 +68,30 @@ BenchmarkParallelNativeGoLog-8           1272560              9123 ns/op        
 PASS
 ok      test/logtest    181.534s
 
-————————————————————————————————————————————————————————————————————————————————————————————————
+————————————————————————————————————————————————————————————————————
+
+go test -v -run=Benchmark -bench=BenchmarkParallel -benchmem -benchtime 10s -cpu=4,8 ./
+goos: windows
+goarch: amd64
+pkg: test/logtest
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkParallelZap
+BenchmarkParallelZap-4                   1000000             10230 ns/op             336 B/op          6 allocs/op
+BenchmarkParallelZap-8                   1000000             10276 ns/op             337 B/op          6 allocs/op
+BenchmarkParallelLogger
+BenchmarkParallelLogger-4                1332555              8774 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelLogger-8                1391256              9226 ns/op             296 B/op          3 allocs/op
+BenchmarkParallelLoggerNoFORMAT
+BenchmarkParallelLoggerNoFORMAT-4        2154008              5483 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerNoFORMAT-8        2115795              5853 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerWrite
+BenchmarkParallelLoggerWrite-4           2059722              6069 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelLoggerWrite-8           1968092              6116 ns/op             112 B/op          1 allocs/op
+BenchmarkParallelNativeGoLog
+BenchmarkParallelNativeGoLog-4           1249767              9930 ns/op             280 B/op          3 allocs/op
+BenchmarkParallelNativeGoLog-8           1211719              9822 ns/op             280 B/op          3 allocs/op
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 $ tail -1 /d/cfoldTest/zaplog.txt && tail -1 /d/cfoldTest/golog.txt && tail -1 /d/cfoldTest/gologFormat.txt && tail -1 /d/cfoldTest/gologWrite.txt && tail -1 /d/cfoldTest/nativelog.txt
 2023-07-10T19:58:15.138+0800    DEBUG   logtest/benchmark_test.go:82    >>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
