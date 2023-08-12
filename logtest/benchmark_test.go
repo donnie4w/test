@@ -2,10 +2,11 @@ package logtest
 
 import (
 	"log"
-	"os"
-	"testing"
-
+	"log/slog"
 	_ "net/http/pprof"
+	"os"
+	"path/filepath"
+	"testing"
 
 	logger "github.com/donnie4w/simplelog/logging"
 	"go.uber.org/zap"
@@ -17,14 +18,14 @@ func initzap() *zap.Logger {
 	encoderConfig := zap.NewProductionEncoderConfig()                                                 //指定时间格式
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
-	encoder := zapcore.NewConsoleEncoder(encoderConfig)               //获取编码器,NewJSONEncoder()输出json格式，NewConsoleEncoder()输出普通文本格式
-	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel) //第三个及之后的参数为写入文件的日志级别,ErrorLevel模式只记录error级别的日志
-	log := zap.New(core, zap.AddCaller())                             //AddCaller()为显示文件名和行号
+	encoder := zapcore.NewConsoleEncoder(encoderConfig)
+	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)
+	log := zap.New(core, zap.AddCaller())
 	return log
 }
 
 // Zap 常规打印
-func BenchmarkZap(b *testing.B) {
+func BenchmarkSerialZap(b *testing.B) {
 	b.StopTimer()
 	log := initzap()
 	b.StartTimer()
@@ -34,7 +35,7 @@ func BenchmarkZap(b *testing.B) {
 }
 
 // go-logger 常规打印
-func BenchmarkLogger(b *testing.B) {
+func BenchmarkSerialLogger(b *testing.B) {
 	b.StopTimer()
 	log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
 	b.StartTimer()
@@ -44,7 +45,7 @@ func BenchmarkLogger(b *testing.B) {
 }
 
 // go-logger FORMAT_NANO模式
-func BenchmarkLoggerNoFORMAT(b *testing.B) {
+func BenchmarkSerialLoggerNoFORMAT(b *testing.B) {
 	b.StopTimer()
 	log, _ := logger.NewLogger().SetConsole(false).SetFormat(logger.FORMAT_NANO).SetRollingFile(`D:\cfoldTest\`, `gologFormat.txt`, 1, logger.GB)
 	b.StartTimer()
@@ -54,7 +55,7 @@ func BenchmarkLoggerNoFORMAT(b *testing.B) {
 }
 
 // go-logger write 方法
-func BenchmarkLoggerWrite(b *testing.B) {
+func BenchmarkSerialLoggerWrite(b *testing.B) {
 	b.StopTimer()
 	log, _ := logger.NewLogger().SetRollingFile(`D:\cfoldTest\`, `gologWrite.txt`, 1, logger.GB)
 	b.StartTimer()
@@ -64,13 +65,32 @@ func BenchmarkLoggerWrite(b *testing.B) {
 }
 
 // go自动log
-func BenchmarkNativeGoLog(b *testing.B) {
+func BenchmarkSerialNativeGoLog(b *testing.B) {
 	b.StopTimer()
 	out, _ := os.OpenFile(`D:\cfoldTest\nativelog.txt`, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0666)
 	log := log.New(out, "[debug]", log.Ldate|log.Ltime|log.Lmicroseconds|log.Lshortfile)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		log.Println(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	}
+}
+
+// slog
+func BenchmarkSerialSlog(b *testing.B) {
+	b.StopTimer()
+	replace := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.SourceKey {
+			source := a.Value.Any().(*slog.Source)
+			source.File = filepath.Base(source.File)
+		}
+		return a
+	}
+	out, _ := os.OpenFile(`D:\cfoldTest\slog.txt`, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0666)
+	h := slog.NewTextHandler(out, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replace})
+	log := slog.New(h)
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		log.Info(">>>aaaaaaaaaaaaaaaaaaaaaaa")
 	}
 }
 
@@ -123,6 +143,24 @@ func BenchmarkParallelNativeGoLog(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
 			log.Println(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+		}
+	})
+}
+
+func BenchmarkParallelSLog(b *testing.B) {
+	replace := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.SourceKey {
+			source := a.Value.Any().(*slog.Source)
+			source.File = filepath.Base(source.File)
+		}
+		return a
+	}
+	out, _ := os.OpenFile(`D:\cfoldTest\slog.txt`, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0666)
+	h := slog.NewTextHandler(out, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replace})
+	log := slog.New(h)
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			log.Info(">>>aaaaaaaaaaaaaaaaaaaaaaa")
 		}
 	})
 }
