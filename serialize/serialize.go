@@ -14,18 +14,17 @@ var tconf = &thrift.TConfiguration{}
 
 func TEncode(ts thrift.TStruct) (_r []byte) {
 	buf := &thrift.TMemoryBuffer{Buffer: bytes.NewBuffer([]byte{})}
-	tcf := thrift.NewTCompactProtocolFactoryConf(tconf)
-	tp := tcf.GetProtocol(buf)
-	ts.Write(context.Background(), tp)
+	protocol := thrift.NewTCompactProtocolConf(buf, tconf)
+	ts.Write(context.Background(), protocol)
+	protocol.Flush(context.Background())
 	_r = buf.Bytes()
 	return
 }
 
 func TDecode[T thrift.TStruct](bs []byte, ts T) (_r T, err error) {
 	buf := &thrift.TMemoryBuffer{Buffer: bytes.NewBuffer(bs)}
-	tcf := thrift.NewTCompactProtocolFactoryConf(tconf)
-	tp := tcf.GetProtocol(buf)
-	err = ts.Read(context.Background(), tp)
+	protocol := thrift.NewTCompactProtocolConf(buf, tconf)
+	err = ts.Read(context.Background(), protocol)
 	return ts, err
 }
 
