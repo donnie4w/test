@@ -2,6 +2,7 @@ package serialize
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/vmihailenco/msgpack"
@@ -109,7 +110,7 @@ func BenchmarkThriftDecode(b *testing.B) {
 	bean.MapVal = map[string][]byte{"aaaa": []byte("i哈哈aaaaaa123456"), "bbb": []byte("i哈哈bbbbbb123456"), "ccc": []byte("i哈哈ccccccc123456")}
 	bs := TEncode(bean)
 	b.ResetTimer()
-	// var _tm *TimMessage
+	// var _tm *Bean
 	for i := 0; i < b.N; i++ {
 		TDecode(bs, &Bean{})
 	}
@@ -248,7 +249,11 @@ func BenchmarkParallelThriftDecode(b *testing.B) {
 	bs := TEncode(bean)
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			TDecode(bs, &Bean{})
+			if b, err := TDecode(bs, &Bean{}); err != nil {
+				fmt.Println(err)
+				fmt.Println(b)
+				break
+			}
 		}
 	})
 }
