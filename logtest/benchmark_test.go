@@ -54,6 +54,7 @@ func BenchmarkSerialLoggerNoFORMAT(b *testing.B) {
 	}
 }
 
+
 // go-logger write 方法
 func BenchmarkSerialLoggerWrite(b *testing.B) {
 	b.StopTimer()
