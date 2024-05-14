@@ -2,7 +2,6 @@ package logtest
 
 import (
 	"log"
-	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"sync"
@@ -13,8 +12,8 @@ import (
 )
 
 func init() {
-	go http.ListenAndServe(":9000", nil)
-	<-time.After(5 * time.Second)
+	// go http.ListenAndServe(":9000", nil)
+	// <-time.After(5 * time.Second)
 }
 
 func Test_Log(t *testing.T) {
