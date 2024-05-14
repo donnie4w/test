@@ -40,7 +40,7 @@ func BenchmarkSerialLogger(b *testing.B) {
 	log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		log.Debug(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+		log.Debug(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	}
 }
 
@@ -53,7 +53,6 @@ func BenchmarkSerialLoggerNoFORMAT(b *testing.B) {
 		log.Debug("[DEBUG]2023/06/10 01:25:55.028277 log_test.go:46:>>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	}
 }
-
 
 // go-logger write 方法
 func BenchmarkSerialLoggerWrite(b *testing.B) {
@@ -91,7 +90,26 @@ func BenchmarkSerialSlog(b *testing.B) {
 	log := slog.New(h)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		log.Info(">>>aaaaaaaaaaaaaaaaaaaaaaa")
+		log.Info(">>>aaaaaaaaaaaaaaaaaaaaaa")
+	}
+}
+
+//slog and logger
+func BenchmarkSerialSlogAndLogger(b *testing.B) {
+	b.StopTimer()
+	replace := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.SourceKey {
+			source := a.Value.Any().(*slog.Source)
+			source.File = filepath.Base(source.File)
+		}
+		return a
+	}
+	loggingFile, _ := logger.NewLogger().SetRollingFile(`D:\cfoldTest\`, `slogLogger.txt`, 1, logger.GB)
+	h := slog.NewTextHandler(loggingFile, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replace})
+	log := slog.New(h)
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		log.Info(">>>aaaaaaaaaaaaaaaaaaaaaa")
 	}
 }
 
@@ -112,7 +130,7 @@ func BenchmarkParallelLogger(b *testing.B) {
 	log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			log.Debug(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+			log.Debug(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 		}
 	})
 }
@@ -161,7 +179,25 @@ func BenchmarkParallelSLog(b *testing.B) {
 	log := slog.New(h)
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			log.Info(">>>aaaaaaaaaaaaaaaaaaaaaaa")
+			log.Info(">>>aaaaaaaaaaaaaaaaaaaaaa")
+		}
+	})
+}
+
+func BenchmarkParallelSLogAndgoLogger(b *testing.B) {
+	replace := func(groups []string, a slog.Attr) slog.Attr {
+		if a.Key == slog.SourceKey {
+			source := a.Value.Any().(*slog.Source)
+			source.File = filepath.Base(source.File)
+		}
+		return a
+	}
+	loggingFile, _ := logger.NewLogger().SetRollingFile(`D:\cfoldTest\`, `slogLogger.txt`, 1, logger.GB)
+	h := slog.NewTextHandler(loggingFile, &slog.HandlerOptions{AddSource: true, ReplaceAttr: replace})
+	log := slog.New(h)
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			log.Info(">>>aaaaaaaaaaaaaaaaaaaaaa")
 		}
 	})
 }
