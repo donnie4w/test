@@ -37,7 +37,8 @@ func BenchmarkSerialZap(b *testing.B) {
 // go-logger 常规打印
 func BenchmarkSerialLogger(b *testing.B) {
 	b.StopTimer()
-	log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
+	//log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
+	log := logger.NewLogger().SetOption(&logger.Option{Console: false, FileOption: &logger.FileSizeMode{Filename: "d:/cfoldTest/golog.txt", Maxsize: 1 << 30}})
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		log.Debug(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
@@ -94,7 +95,7 @@ func BenchmarkSerialSlog(b *testing.B) {
 	}
 }
 
-//slog and logger
+// slog and logger
 func BenchmarkSerialSlogAndLogger(b *testing.B) {
 	b.StopTimer()
 	replace := func(groups []string, a slog.Attr) slog.Attr {
@@ -127,7 +128,9 @@ func BenchmarkParallelZap(b *testing.B) {
 // go-logger 常规打印
 func BenchmarkParallelLogger(b *testing.B) {
 	// b.SetParallelism(8)
-	log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
+	//log, _ := logger.NewLogger().SetConsole(false).SetRollingFile(`D:\cfoldTest\`, `golog.txt`, 1, logger.GB)
+	log := logger.NewLogger().SetOption(&logger.Option{Console: false, FileOption: &logger.FileSizeMode{Filename: "d:/cfoldTest/golog.txt", Maxsize: 1 << 30}})
+
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
 			log.Debug(">>>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
