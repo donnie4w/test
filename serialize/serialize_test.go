@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	. "github.com/donnie4w/gofer/util"
 	"github.com/vmihailenco/msgpack"
 )
 
