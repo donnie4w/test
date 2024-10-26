@@ -340,4 +340,280 @@ BenchmarkParallelSLogAndgoLogger-8        633426              5596 ns/op        
 * 从压测结果可以看到，在相同格式下，无论是串行还是高并发场景中，go-logger均表现出最佳性能和最小的内存分配。
 * go-logger作为slog日志文件管理库，无论内存分配还是性能，都与单独使用slog的效果相同，没有额外的性能损耗。
 
+--------
 
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              570457              3956 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              610975              4044 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    478735              4815 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    482280              4933 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               576457              4010 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               513609              3966 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   482364              4914 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   479356              4921 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        461556              5058 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        489222              5046 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            475184              4916 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            485504              5026 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  349200              6773 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  357151              6610 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4629242               568.1 ns/op           165 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4347580               576.0 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 478394              4952 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 470799              5075 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      449910              5150 ns/op             345 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      439743              5250 ns/op             345 B/op          6 allocs/op
+```
+
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              578982              4068 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              527059              4032 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    471318              4866 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    492363              4880 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               576114              4096 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               535795              4084 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   477541              4977 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   478213              4970 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        465369              5056 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        406258              5085 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            467674              4922 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            475890              4963 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  352056              6703 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  364632              6489 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4334329               545.7 ns/op           165 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4512244               541.5 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 483408              5012 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 462290              5060 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      456644              5372 ns/op             345 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      442698              5264 ns/op             345 B/op          6 allocs/op
+```
+
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              618345              4051 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              600762              4045 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    466516              4784 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    478645              4803 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               602014              4031 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               573824              4078 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   418012              4927 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   472023              4925 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        476856              4988 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        500853              5060 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            468685              4907 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            479719              4908 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  342488              6929 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  350866              6710 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4308105               547.1 ns/op           164 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4498796               543.2 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 474552              5020 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 454094              5157 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      431023              5252 ns/op             345 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      414043              5241 ns/op             345 B/op          6 allocs/op
+```
+
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              573181              4019 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              555907              4188 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    455720              4921 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    487197              5000 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               620002              4083 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               598402              4039 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   477624              4838 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   520885              5031 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        478291              4980 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        495639              5065 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            456236              4928 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            485220              4928 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  353738              6668 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  357856              6689 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4386367               550.2 ns/op           157 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4308735               640.8 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 472104              4983 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 474613              4989 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      447592              5200 ns/op             347 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      454953              5213 ns/op             345 B/op          6 allocs/op
+```
+
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              543579              4068 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              584174              4058 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    466582              4867 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    485359              4829 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               531115              3983 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               547891              4099 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   491005              4981 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   498840              4970 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        454028              5124 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        422102              5207 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            476598              5041 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            486174              4997 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  356665              6676 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  356013              6532 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4573236               530.2 ns/op           157 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4565874               519.8 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 462074              4980 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 453877              5037 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      450961              5205 ns/op             345 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      442342              5354 ns/op             345 B/op          6 allocs/op
+```
+
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              514654              4323 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              570302              4145 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    514950              4890 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    465789              4933 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               615319              4088 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               594363              4088 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   461121              4872 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   499617              5059 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        459706              5031 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        482911              5062 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            431725              5079 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            479290              5022 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  358591              6675 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  324229              6430 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4533364               557.3 ns/op           162 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4173549               739.4 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 476944              4989 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 446238              5036 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      428470              5196 ns/op             345 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      434781              5288 ns/op             345 B/op          6 allocs/op
+```
+
+```text
+Benchmark_Serial_NativeLog
+Benchmark_Serial_NativeLog-4              598425              4095 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_NativeLog-8              589526              4272 ns/op             248 B/op          2 allocs/op
+Benchmark_Serial_Zap
+Benchmark_Serial_Zap-4                    485172              4943 ns/op             352 B/op          6 allocs/op
+Benchmark_Serial_Zap-8                    491910              4851 ns/op             353 B/op          6 allocs/op
+Benchmark_Serial_GoLogger
+Benchmark_Serial_GoLogger-4               527454              3987 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_GoLogger-8               574303              4083 ns/op              80 B/op          2 allocs/op
+Benchmark_Serial_Slog
+Benchmark_Serial_Slog-4                   498553              4952 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_Slog-8                   466743              4942 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger
+Benchmark_Serial_SlogAndGoLogger-4        443798              5149 ns/op             344 B/op          6 allocs/op
+Benchmark_Serial_SlogAndGoLogger-8        460762              5208 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_NativeLog
+Benchmark_Parallel_NativeLog-4            424681              5176 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_NativeLog-8            479988              5045 ns/op             248 B/op          2 allocs/op
+Benchmark_Parallel_Zap
+Benchmark_Parallel_Zap-4                  341937              6736 ns/op             352 B/op          6 allocs/op
+Benchmark_Parallel_Zap-8                  353247              6517 ns/op             353 B/op          6 allocs/op
+Benchmark_Parallel_GoLogger
+Benchmark_Parallel_GoLogger-4            4240896               549.9 ns/op           163 B/op          3 allocs/op
+Benchmark_Parallel_GoLogger-8            4441388               550.4 ns/op           128 B/op          3 allocs/op
+Benchmark_Parallel_SLog
+Benchmark_Parallel_SLog-4                 477423              4972 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLog-8                 447642              5064 ns/op             344 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger
+Benchmark_Parallel_SLogAndGoLogger-4      424813              5242 ns/op             345 B/op          6 allocs/op
+Benchmark_Parallel_SLogAndGoLogger-8      425070              5215 ns/op             345 B/op          6 allocs/op
+```
+
+| 库              | 测试类型       | 并发数 | 平均时间(ns/op) | 内存分配(B/op) | 内存分配次数(allocs/op) |
+|------------------|----------------|--------|------------------|------------------|--------------------------|
+| **NativeLog**    | Serial         | 4      | 3956             | 248              | 2                        |
+|                  |                | 8      | 4044             | 248              | 2                        |
+|                  | Parallel       | 4      | 4916             | 248              | 2                        |
+|                  |                | 8      | 5026             | 248              | 2                        |
+| **Zap**          | Serial         | 4      | 4815             | 352              | 6                        |
+|                  |                | 8      | 4933             | 353              | 6                        |
+|                  | Parallel       | 4      | 6773             | 352              | 6                        |
+|                  |                | 8      | 6610             | 353              | 6                        |
+| **GoLogger**     | Serial         | 4      | 4010             | 80               | 2                        |
+|                  |                | 8      | 3966             | 80               | 2                        |
+|                  | Parallel       | 4      | 568.1            | 165              | 3                        |
+|                  |                | 8      | 576.0            | 128              | 3                        |
+| **slog**         | Serial         | 4      | 4914             | 344              | 6                        |
+|                  |                | 8      | 4921             | 344              | 6                        |
+|                  | Parallel       | 4      | 4952             | 344              | 6                        |
+|                  |                | 8      | 5075             | 344              | 6                        |
+| **slog + GoLogger** | Serial      | 4      | 5058             | 344              | 6                        |
+|                  |                | 8      | 5046             | 344              | 6                        |
+|                  | Parallel       | 4      | 5150             | 345              | 6                        |
+|                  |                | 8      | 5250             | 345              | 6                        |
+
+### 性能分析
+
+1. **NativeLog（log库）**:
+    - **串行性能**: 具有相对较低的延迟（3956 ns/op 和 4044 ns/op），且内存占用较少（248 B/op）。
+    - **并行性能**: 在并发测试中，NativeLog 的性能也保持稳定，延迟（4916 ns/op 和 5026 ns/op）仍然低于其他库。
+
+2. **Zap（zap库）**:
+    - **串行性能**: Zap 的串行性能稍逊色于 log，延迟略高（4815 ns/op 和 4933 ns/op），并且内存占用较高（352 B/op）。
+    - **并行性能**: Zap 在并行测试中表现较差，延迟明显高于其他库，达到 6773 ns/op 和 6610 ns/op，显示出其在高并发情况下的瓶颈。
+
+3. **GoLogger（go-logger）**:
+    - **串行性能**: 在串行性能上表现良好，延迟（4010 ns/op 和 3966 ns/op），内存使用最低（80 B/op）。
+    - **并行性能**: 在并行测试中表现优异，延迟显著低于其他库，仅为 568.1 ns/op 和 576.0 ns/op，显示了其极高的并发处理能力。
+
+4. **slog（slog库）**:
+    - **串行性能**: slog 的串行性能在所有库中属于中等水平（4914 ns/op 和 4921 ns/op），内存占用相对较高（344 B/op）。
+    - **并行性能**: 在并行情况下，slog 的性能表现中规中矩（4952 ns/op 和 5075 ns/op）。
+
+5. **slog + GoLogger（slog+go-logger）**:
+    - **串行性能**: 当结合 slog 和 GoLogger 时，性能表现为（5058 ns/op 和 5046 ns/op），内存占用（344 B/op）与单独使用slog库相同。
+    - **并行性能**: 并行测试中，组合使用的性能（5150 ns/op 和 5250 ns/op）。
