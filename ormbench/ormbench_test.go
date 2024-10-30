@@ -1,6 +1,7 @@
 package ormbench
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/donnie4w/gdao"
@@ -9,6 +10,8 @@ import (
 	"github.com/donnie4w/gdao/gdaoMapper"
 	"github.com/donnie4w/gdaodemo/dao"
 	"github.com/donnie4w/simplelog/logging"
+	"github.com/donnie4w/test/ormbench/ent"
+	hstestEnt "github.com/donnie4w/test/ormbench/ent/hstest"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -46,11 +49,17 @@ var sqlx_mysql, _ = sqlx.Connect("mysql", mysql_dns)
 var sqlx_sqlite, _ = sqlx.Connect("sqlite3", sqlite_dns)
 var sqlx_postgres, _ = sqlx.Connect("postgres", postgreql_dns)
 
+var ent_mysql, _ = ent.Open("mysql", mysql_dns)
+var ent_sqlite, _ = ent.Open("sqlite3", mysql_dns)
+var ent_postgres, _ = ent.Open("postgres", postgreql_dns)
+
 var db *sql.DB
 var dbtype base.DBType
 
 var gormdb *gorm.DB
 var sqlxdb *sqlx.DB
+
+var entdb *ent.Client
 
 func choseDB(i int) {
 	switch i {
@@ -58,29 +67,33 @@ func choseDB(i int) {
 		db, dbtype = db_mysql, gdao.MYSQL
 		gormdb = gormmysql
 		sqlxdb = sqlx_mysql
+		entdb = ent_mysql
 	case 2: //SQLITE
 		db, dbtype = db_sqlite, gdao.SQLITE
 		gormdb = gormsqlite
 		sqlxdb = sqlx_sqlite
+		entdb = ent_sqlite
 	case 3: // POSTGRESQL
 		db, dbtype = db_postgres, gdao.POSTGRESQL
 		gormdb = gormpostgreql
 		sqlxdb = sqlx_postgres
 		p1, p2, p3 = `$1`, `$2`, `$3`
 		sqlstr = "select id,age,rowname,updatetime,body,floa,level from hstest where id between " + p1 + " and " + p2 + "  limit " + p3
+		entdb = ent_postgres
 	case 4: // pgx
 		db, dbtype = db_pgx, gdao.POSTGRESQL
 		gormdb = gormpostgreql
 		sqlxdb = sqlx_postgres
 		p1, p2, p3 = `$1`, `$2`, `$3`
 		sqlstr = "select id,age,rowname,updatetime,body,floa,level from hstest where id between " + p1 + " and " + p2 + "  limit " + p3
+		entdb = ent_postgres
 	default:
 		panic("no such db type :" + strconv.Itoa(i))
 	}
 }
 
 func init() {
-	choseDB(3)
+	choseDB(1)
 	gdao.Init(db, dbtype)
 	db = gdao.GetDefaultDBHandle().GetDB()
 	logging.Debug("check db")
@@ -266,5 +279,22 @@ func BenchmarkSerial_sqlx_sql(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var Hss []Hs1
 		sqlxdb.Select(&Hss, sqlstr, args...)
+	}
+}
+
+func BenchmarkSerial_ent(b *testing.B) {
+	//client, err := ent.Open("mysql", mysql_dns)
+	//if err != nil {
+	//	log.Fatalf("failed opening connection to sqlite: %v", err)
+	//}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, err := entdb.Hstest.
+			Query().Where(hstestEnt.IDGTE(1), hstestEnt.IDLTE(100)).
+			Limit(10).All(context.TODO())
+		if err != nil {
+			b.Fatalf("failed querying hstest record: %v", err)
+			break
+		}
 	}
 }
