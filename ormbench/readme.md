@@ -104,3 +104,79 @@ Benchmark_sqlx_sql
 Benchmark_sqlx_sql-4                        4758            260370 ns/op            3080 B/op         65 allocs/op
 Benchmark_sqlx_sql-8                        4665            267808 ns/op            3080 B/op         65 allocs/op
 ```
+
+-------
+
+#### 连接postgreSql场景的压测数据
+
+```text
+pkg: github.com/donnie4w/test/ormbench
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkSerial_Native
+BenchmarkSerial_Native-4                            4800            247637 ns/op            2816 B/op         97 allocs/op
+BenchmarkSerial_Native-8                            4441            250316 ns/op            2816 B/op         97 allocs/op
+BenchmarkSerial_gdao_struct
+BenchmarkSerial_gdao_struct-4                       8030            146417 ns/op           19997 B/op        449 allocs/op
+BenchmarkSerial_gdao_struct-8                       8245            150725 ns/op           20023 B/op        449 allocs/op
+BenchmarkSerial_gdao_sql
+BenchmarkSerial_gdao_sql-4                          7287            141983 ns/op           16481 B/op        378 allocs/op
+BenchmarkSerial_gdao_sql-8                          8625            138804 ns/op           16502 B/op        378 allocs/op
+BenchmarkSerial_gdao_databean
+BenchmarkSerial_gdao_databean-4                     9358            131579 ns/op           11859 B/op        330 allocs/op
+BenchmarkSerial_gdao_databean-8                     9093            131845 ns/op           11872 B/op        330 allocs/op
+BenchmarkSerial_gdao_mapper_struct
+BenchmarkSerial_gdao_mapper_struct-4                6784            150160 ns/op           13716 B/op        398 allocs/op
+BenchmarkSerial_gdao_mapper_struct-8                8329            148866 ns/op           13731 B/op        398 allocs/op
+BenchmarkSerial_gdao_mapper_databean
+BenchmarkSerial_gdao_mapper_databean-4              8152            134157 ns/op           11205 B/op        343 allocs/op
+BenchmarkSerial_gdao_mapper_databean-8              8794            138595 ns/op           11217 B/op        343 allocs/op
+BenchmarkSerial_gorm_struct
+BenchmarkSerial_gorm_struct-4                       6547            155387 ns/op           13295 B/op        231 allocs/op
+BenchmarkSerial_gorm_struct-8                       7963            154454 ns/op           13323 B/op        231 allocs/op
+BenchmarkSerial_gorm_sql
+BenchmarkSerial_gorm_sql-4                          7987            149439 ns/op           11772 B/op        194 allocs/op
+BenchmarkSerial_gorm_sql-8                          7690            152698 ns/op           12011 B/op        194 allocs/op
+BenchmarkSerial_sqlx_sql
+BenchmarkSerial_sqlx_sql-4                          4466            276594 ns/op            3097 B/op         65 allocs/op
+BenchmarkSerial_sqlx_sql-8                          4030            270020 ns/op            3098 B/op         65 allocs/op
+BenchmarkSerial_ent
+BenchmarkSerial_ent-4                               3814            283573 ns/op           10136 B/op        280 allocs/op
+BenchmarkSerial_ent-8                               4154            280818 ns/op           10136 B/op        280 allocs/op
+```
+
+#### 连接mysql场景的压测数据
+
+```text
+pkg: github.com/donnie4w/test/ormbench
+cpu: Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+BenchmarkSerial_Native
+BenchmarkSerial_Native-4                            3916            290730 ns/op            5216 B/op        105 allocs/op
+BenchmarkSerial_Native-8                            4207            292908 ns/op            5216 B/op        105 allocs/op
+BenchmarkSerial_gdao_struct
+BenchmarkSerial_gdao_struct-4                       5109            200813 ns/op           20730 B/op        488 allocs/op
+BenchmarkSerial_gdao_struct-8                       5972            203126 ns/op           20758 B/op        488 allocs/op
+BenchmarkSerial_gdao_sql
+BenchmarkSerial_gdao_sql-4                          5436            187344 ns/op           17893 B/op        393 allocs/op
+BenchmarkSerial_gdao_sql-8                          6284            196396 ns/op           17918 B/op        393 allocs/op
+BenchmarkSerial_gdao_databean
+BenchmarkSerial_gdao_databean-4                     6566            178864 ns/op           11114 B/op        314 allocs/op
+BenchmarkSerial_gdao_databean-8                     6204            183293 ns/op           11124 B/op        314 allocs/op
+BenchmarkSerial_gdao_mapper_struct
+BenchmarkSerial_gdao_mapper_struct-4                5756            212888 ns/op           20006 B/op        507 allocs/op
+BenchmarkSerial_gdao_mapper_struct-8                5682            207857 ns/op           20036 B/op        508 allocs/op
+BenchmarkSerial_gdao_mapper_databean
+BenchmarkSerial_gdao_mapper_databean-4              6091            202900 ns/op           16118 B/op        409 allocs/op
+BenchmarkSerial_gdao_mapper_databean-8              6054            204899 ns/op           16135 B/op        409 allocs/op
+BenchmarkSerial_gorm_struct
+BenchmarkSerial_gorm_struct-4                       3116            355411 ns/op           16700 B/op        251 allocs/op
+BenchmarkSerial_gorm_struct-8                       3550            356480 ns/op           16734 B/op        251 allocs/op
+BenchmarkSerial_gorm_sql
+BenchmarkSerial_gorm_sql-4                          3742            314655 ns/op           14044 B/op        208 allocs/op
+BenchmarkSerial_gorm_sql-8                          3735            327450 ns/op           14066 B/op        208 allocs/op
+BenchmarkSerial_sqlx_sql
+BenchmarkSerial_sqlx_sql-4                          3524            295426 ns/op            8620 B/op        123 allocs/op
+BenchmarkSerial_sqlx_sql-8                          4105            303361 ns/op            8623 B/op        123 allocs/op
+BenchmarkSerial_ent
+BenchmarkSerial_ent-4                               3543            329408 ns/op           14144 B/op        319 allocs/op
+BenchmarkSerial_ent-8                               3548            331312 ns/op           14144 B/op        319 allocs/op
+```
