@@ -37,7 +37,7 @@ func Benchmark_logx(b *testing.B) {
 }
 
 func Test_Parallel(t *testing.T) {
-	for i := range 1 << 15 {
+	for i := range 1 << 17 { //这里将模拟每个节点 13万并发写日志数据
 		go func() {
 			e1 := c1.Debug([]byte("hello--------------->" + strconv.Itoa(i)))
 			e2 := c2.Info([]byte("world--------------->" + strconv.Itoa(i)))
@@ -47,8 +47,8 @@ func Test_Parallel(t *testing.T) {
 			}
 		}()
 	}
-	time.Sleep(10 * time.Second)
-	TestFileSync(t)
+	time.Sleep(30 * time.Second)
+	TestFileSync(t) //检查各个节点生成的日志文件是否相同
 }
 
 func newlog1() *Logx {
